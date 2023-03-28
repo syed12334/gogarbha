@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?php echo maintitle?></title>
+    <link href="<?php echo asset_url(); ?>css/artiiplants.css" rel="stylesheet">
+    <link href="<?php echo asset_url(); ?>css/artiiplantss.css" rel="stylesheet">
+    <link href="<?php echo asset_url(); ?>css/all.min.css" rel="stylesheet">
+    <link href="<?php echo asset_url(); ?>css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?php echo asset_url(); ?>css/font-awesome.min1.css" rel="stylesheet">
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <![endif]-->
+    <?php echo $common;?>
+    <style type="text/css">
+    .no-td-border {
+        border-bottom: none !important;
+    }
+    </style>
+</head>
+
+<body>
+    <?php echo $header;?>
+
+
+    <div class="breadbg">
+        <div class="container">
+            <div class="row">
+                <ul class="breadcrumb">
+                    <li><a href="<?php echo base_url() ?>"><i class="fa fa-home"></i></a></li>
+                    <li>Shopping Cart</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- <PAGE CONTENT> ================================= -->
+    <div class="page_content acpage ">
+
+
+        <div class="container">
+            <?php if(count($this->cart->contents()) > 0){
+                		foreach ($this->cart->contents() as $items){
+							$options = $this->cart->product_options($items['rowid']);
+							$type = $options['categ'];
+                	?>
+            <div class="allcart item_summary_table" id="loaddata">
+                <div class="cart-img">
+                    <a href="<?php echo $items['plink'];?>">
+                        <img src="<?php echo $items['image'];?>" class="img-thumbnail" width="110">
+                    </a>
+                </div>
+                <div class="cart-des">
+                    <a class="cart-des-name"
+                        href="<?php echo $items['plink'];?>"><?php echo $items['name'];?><?php if($items['sizeid'] != '0'){echo '('.$items['sname'].')';}?></a>
+                    <div><?php echo $items['pcode']?></div>
+                    <div class="price"><i class="fas fa-rupee-sign"></i>
+                        <?php echo $this->home_db->getnumberformat($items['price']*$items['qty']);?></div>
+                    <div class="input-group btn-block" style="max-width: 200px;">
+
+                        <input type="text" value="<?php echo $items['qty'];?>" class="qty onlynumbers form-control"
+                            name="qty<?php echo $items['rowid'];?>" id="qty<?php echo $items['rowid'];?>"
+                            uid="<?php echo $items['rowid'];?>" maxlength="3">
+                    </div>
+                </div>
+                <button type="button" data-toggle="tooltip" title="" class="pull-right cart-re" onclick="remove_row('<?php echo $items['rowid'];?>');"><i class="fa fa-trash-o"></i></button>
+            </div>
+
+
+
+
+
+
+            <?php }}
+            else{
+            ?>
+
+            <h1 class="text-center">Oops!! There are no items in your cart</h1>
+
+            <?php }?>
+
+            <div class="row">
+
+                <div class="col-lg-8 col-xs-12 col-md-6">
+                    <div class="gift_coupon" id="gift_voucherid">
+                        <?php if(!$this->session->userdata('coupon')){
+							?>
+                        <h1>Use Coupon Code</h1>
+
+                        <div class="input-group">
+                            <input type="text" placeholder="Enter your gift coupon" name="coupon" id="coupon"
+                                class="form-control">
+                            <span class="input-group-btn">
+                                <input type="submit" class="btn btn-primary giftcoupon" value="update">
+                            </span>
+                        </div>
+
+
+                        <?php }
+                    else{?>
+                        <p class="have gift_coupon_added">1 gift coupon added <span
+                                class="removecoupon icon icon-pencil" title="Edit"></span><br>
+                            <?php if(floatval($this->cart->total()) > 0){?><span class="save">You have saved <i
+                                    class="icon_rs_green"></i>
+                                <?php echo $this->session->userdata('discount_amt');?> </span><?php }?>
+                        </p>
+                        <?php }
+                    ?>
+                    </div>
+
+                    <?php $charges = 0;?>
+                </div>
+                <div class="col-lg-4 col-xs-12 col-sm-12 col-md-6">
+                    <table class=" table table-bordered">
+                        <?php if($this->session->userdata('coupon') && floatval($this->cart->total()) > 0){?>
+
+                        <tr>
+                            <td class="text-right"> Saved </td>
+                            <td class="text-right"><i class="fas fa-rupee-sign"></i>
+                                -<?php echo $this->session->userdata('discount_amt');?> </td>
+                        </tr>
+                        <?php }?>
+                        <?php $charges = 0;?>
+                        <?php if($this->session->userdata('pincode')){
+		                    		if(floatval($this->session->userdata('charges')) > 0  && floatval($this->cart->total()) > 0){
+										$charges = $this->session->userdata('charges');
+		                    	?>
+                        <tr>
+                            <td class="text-right"> Delivery Charges </td>
+                            <td class="text-right"><i class="fas fa-rupee-sign"></i> <?php echo $charges;?> </td>
+                        </tr>
+                        <?php }}?>
+                        <tr>
+                            <td class="text-right">Total Payable Amount </td>
+                            <td class="text-right"><i class="fas fa-rupee-sign"></i>
+                                <?php echo $this->home_db->getcarttotal($this->session->userdata('discount'),$this->cart->total(),$charges);?>
+                            </td>
+                            <p class="tax">(Incl.tax)</p>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+           
+                <div id="gmsgbox"></div>
+
+
+
+                <div class="buttons clearfix">
+                    
+                <div class="pull-left">
+                            <a href="<?php echo base_url();?>" class="btn btn-primary">
+                                 Continue Shopping</a>
+                </div>
+                <div class="pull-right">
+                           
+                                <a href="<?php echo base_url()?>cart/billing_shipping" class="btn btn-primary"> Place
+                                    Order</a>
+                </div>     
+                </div>
+
+
+
+
+
+             
+        </div>
+        <!-- END </ PAGE CONTENT>  -->
+
+        <?php echo $footer;?>
+
+
+
+</body>
+<script src="<?php echo asset_url() ?>js/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="<?php echo asset_url() ?>js/bootstrap.min.js" type="text/javascript"></script>
+<script src="<?php echo asset_url() ?>js/jquery.elevatezoom.js" type="text/javascript"></script>
+<script src="<?php echo asset_url() ?>js/owl.carousel.min.js" type="text/javascript"></script>
+<script src="<?php echo asset_url() ?>js/slick.js" type="text/javascript"></script>
+<script src="<?php echo asset_url() ?>js/animate.js" type="text/javascript"></script>
+<script src="<?php echo asset_url() ?>js/lightbox-2.6.min.js" type="text/javascript"></script>
+
+<script src="<?php echo asset_url();?>js/jquery-1.7.1.js" type="text/javascript"></script>
+<?php echo $jsFile;?>
+<script type="text/javascript">
+$(document).ready(function() {
+
+
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,825 @@
+<?php 
+	//echo "<pre>";print_r($product);exit;
+	
+?>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title><?php echo maintitle ?></title>
+   <meta name="Description" CONTENT="Gogarbha.">
+   
+ <link rel="apple-touch-icon" sizes="180x180" href="<?php echo asset_url(); ?>images/Gogarbha_Logo.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo asset_url(); ?>images/Gogarbha_Logo.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo asset_url(); ?>images/Gogarbha_Logo.svg">
+
+      <!-- fonts -->
+    
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/swiper.min.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/animate.min.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/odometer.min.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/jarallax.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/magnific-popup.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/agrikon-icons.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/nouislider.min.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/nouislider.pips.css">
+
+    <!-- template styles -->
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>css/main.css">
+		<link rel="canonical" href="<?php if(!empty($product) && isset($product)) {echo base_url().'product/'.$product[0]->ppage_url; }else {redirect('My404');exit();}?>" />
+		<link rel="alternate" hreflang="en" href="<?php if(!empty($product) && isset($product)) {echo base_url().'product/'.$product[0]->ppage_url; }else {redirect('My404');exit();}?>"/>
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<![endif]-->
+		<?php echo $common; ?>
+		<script type="application/javascript">
+		window.fbAsyncInit = function() {
+		FB.init({
+		appId      : '3182287005425708',
+		cookie     : true,
+		xfbml      : true,
+		version    : 'v12.0'
+		});
+
+		FB.AppEvents.logPageView();   
+
+		};
+
+		(function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "https://connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+
+		function FBShareOp(title,descr,image,url)
+		{
+		if(title=="noval")
+		{
+		title=$("#tle").val();
+		}
+		if(descr=="noval")
+		{
+		descr=$("#des").val();
+		}
+		if(image=="noval")
+		{
+		image=$("#imge").val();
+		}
+		if(url=="noval")
+		{
+		url=$("#url12").val();
+		}
+		FB.ui({
+		method: 'feed',
+		redirect_uri: '<?php echo base_url()?>',
+		name: title,
+		link: url,
+		picture: image,
+		description: descr
+
+		}, function(response) { if(response && response.post_id){}
+		else{}
+		});
+		}
+		</script>
+	   <style type="text/css">
+		.product_box .img .img_box .img_src img{
+			width: auto;
+		}
+		
+		.tabs_container .prodtabcontent {
+			padding: 35px 15px;
+		}
+		
+		.availability .available_result{
+			margin-top: 0px;
+		}
+		
+		.breadcrumb {
+    color: #014E37;
+}
+
+tr {
+    line-height: 32px;
+}
+    </style>
+	<?php echo $common; ?>
+	<style>
+	.offer_tag {
+    background-color: #014E37;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 16px 3px 9px;
+    left: 0px;
+    position: absolute;
+    top: 29px;
+    z-index: 9;
+    text-transform: uppercase;
+}
+.offer_tag::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-top: 12px solid #014E37;
+    border-bottom: 13px solid #014E37;
+    border-right: 7px solid #fff;
+}
+.rela{
+			position:relative!important;
+			z-index: 0;
+		}
+
+        .exp {
+    color: #000!important;
+    font-size: 12px!important;
+    margin: -8px 0 10px 0!important;
+    font-weight: 500!important;
+}
+
+p.edit.avil, p.edit.not-avil {
+    background: #72d975;
+    font-size: 14px;
+    float: none;
+    padding: 15px;
+    font-weight: 400;
+}
+
+p.edit.not-avil {
+    background: #ff6a9c;
+}
+
+
+	</style>
+	</head>
+	<body class="right-bg">
+		<span class="myloader" style="display: none"></span>
+		<?php echo $header; ?>
+
+   <section class="page-header">
+            <div class="page-header__bg"
+                style="background-image: url(<?php echo asset_url(); ?>images/backgrounds/page-header-bg-1-1.jpg);"></div>
+            <!-- /.page-header__bg -->
+            <div class="container">
+                <ul class="thm-breadcrumb list-unstyled">
+                
+                    <li><span><a href="<?php echo base_url(); ?>">Home</a> | <?php echo $product[0]->cname; ?></span></li>
+                </ul><!-- /.thm-breadcrumb list-unstyled -->
+
+            </div><!-- /.container -->
+        </section><!-- /.page-header -->
+
+  <section class="service-details pt-5 pb-5">
+  	<?php if (is_array($product)) {
+ $mrp = $product[0]->mrp;
+                      $sell = $product[0]->selling_price;
+                      $disc = $this->home_db->discount($mrp, $sell);
+  		?>
+            <div class="container">
+                <div class="row">
+<?php $images = $this->home_db->getcontent('product_images', 'pid', $product[0]->id, '0', 'asc');
+						//echo $this->db->last_query();exit;?>
+                    <div class="col-md-6 rop">
+<?php if (is_array($images)) {
+										foreach ($images as $img) {
+										?>
+                        <img src="<?php echo cdn_url() . $img->image_medium; ?>" alt="">
+
+                        <?php
+                    }
+                }
+                        ?>
+
+                    </div><!-- /.col-md-6 -->
+
+                    <div class="col-md-6 dets"> 
+                        <h4 class="mt-0 mb-1"><?php echo $product[0]->title; ?></h4>
+                        <h6 class="mb-1"> Product Code: <?php if (!empty($product[0]->pcode)) { ?> [<?php echo $product[0]->pcode ?>]<?php } ?></h6>
+                        <hr>
+                        <div class="blog-card__meta mb-3">
+                        	<?php $rate = $this->products_db->getratings($product[0]->id); ?>
+                            <a><i class="far fa-star"></i><?php echo count($rate); ?> Rating</a> &nbsp;&nbsp; |
+                            <a class="review-t"><i class="far fa-comments"></i> <?php $reviews = $this->home_db->getRecords('reviews', ['psid'=> $product[0]->id],'*');
+										if (is_array($reviews)) {
+										echo count($reviews);
+										} else {
+										echo 0;
+										} ?>  Reviews</a> &nbsp;&nbsp; |
+                            <a class="text-success"><i class="fas fa-check-circle text-success"></i><?php if($product[0]->stock >0){?> In Stock<?php }else{?>Out of Stock<?php }?></a>
+                        </div>
+                        <hr>
+                        <input type="hidden" id="hid" value="<?php echo $product[0]->id; ?>">
+
+                        <div class="price">
+                            <span class="main"><i class="fas fa-rupee-sign"></i> <?php echo $this->home_db->getnumberformat($product[0]->selling_price); ?></span>
+                            <span class="hash-price"><?php if (floatval($disc) > 0) {?><i class="fas fa-rupee-sign"></i> <?php echo $this->home_db->getnumberformat($product[0]->mrp); ?> <?php }?></span>  <br/></span>
+                         
+                           
+                           <div class="offer-tag position-relative"><span><?php  echo round($disc);?>%</span></div>
+                        </div>
+
+                        <div class="special-box p-4 text-white">
+                          
+							<div class="availability p-0">
+								<div id="checkpin" class="pincode_form"
+										<?php if ($this->session->userdata('pincode')) { ?>  <?php } ?>>
+										  <h6>Check delivery options at your location</h6>
+                            <form onsubmit="return checkpincode();">
+                            <div class="input-group mb-3">
+                                <input type="text" required="required" placeholder=" your pincode"class="onlynumbers checkpincode form-control" maxlength="6" name="pincode" id="pincode" value="">
+                                <div class="input-group-append">
+                                    <input type="submit" id="pinbtn button-addon2" value="Check" class="btn btn-info">
+                                </div>
+                            </div>
+                           
+							</form>
+										<?php
+										$days = 6;
+										$terms = '';
+										if (is_array($settings)) {
+										if (!empty($settings[0]->delivery_days)) {
+										$days = $settings[0]->delivery_days;
+										}
+										$terms = $settings[0]->product_terms;
+										}
+										if (intval($days) > 1) {
+										$days = '' . ($days - 1) . '-' . ($days + 1) . ' working days';
+										} else if (intval($days) == 1) {
+										$days = '1 working day';
+										} else if (intval($days) == 0) {
+										$days = '5-7 working days';
+										}
+										?>
+										<p class="exp">Expected delivery <?php echo $days; ?></p>
+									</div>
+									<div class="available_result" id="pinchecked"
+									<?php if (!$this->session->userdata('pincode')) { ?>style="display: none;"
+									<?php } ?>>
+										<p class="edit avil"><b>Delivery 
+										(<?php echo $this->session->userdata('pincode'); ?>)  </b>
+										 
+											<span class="head">
+											</span>
+											<span class="text">This item can be Delivered to your location<br>
+											 Delivery charges applicable <i class="yes icon icon-done_green"></i><i class="fas fa-pencil-alt" onclick='removepincode();'></i>
+											</span>
+									</p>
+									</div>
+							</div>
+
+                        </div><!-- /.special-box -->
+
+                        <div class="call-to-action__button">
+                         <!--    <div class="left-align">
+                                <div class="input-group qty">
+                                    <input type="button" value="-" class="button-minus" data-field="quantity">
+                                    <input type="number" step="1" max="" value="1" name="quantity"
+                                        class="quantity-field">
+                                    <input type="button" value="+" class="button-plus" data-field="quantity">
+                                </div>
+                            </div> -->
+                           
+
+                          
+                            <?php
+								$wish = 0;
+								if (!empty($UserDetail)) {
+								$db = array(
+								'categ' => $product[0]->cpage_url,
+								'pid' => $product[0]->id,
+								'user_id' => $UserDetail[0]->id
+								);
+								$wish = $this->home_db->checkwishlist($db);
+								}
+								?>
+                           <!--  <div class="left-align"> <span class="share wish" title="Add to wishlist"><i
+                                        class="fas fa-heart"></i></span> </div> -->
+<?php if($product[0]->stock>0){?>
+
+                                         <div class="left-align">
+                                <a href="javascript:add_cart('<?php echo $product[0]->cpage_url; ?>','<?php echo $product[0]->id; ?>');"class="add-to-cart thm-btn ">ADD TO CART</a><!-- /.thm-btn -->
+                            </div>
+                                        <a href="javascript:void(0);" categ="<?php echo $product[0]->cpage_url ?>"
+								wid="<?php echo $product[0]->id; ?>" id="w<?php echo $product[0]->id; ?>"
+								<?php if ($wish == 0) { ?>class="share wish awishlist addto_wish<?php echo $product[0]->id; ?>"
+								<?php } else { ?>class="btn" <?php } ?>>
+								<i id="icon<?php echo $product[0]->id ?>"
+								class="far  <?php if ($wish == 0) { ?>fa-heart<?php } else { ?>fa-heart<?php } ?>"></i>
+								<?php /* if ($wish == 0) { ?>Add to Wishlist<?php } else { ?>Added to
+								Wishlist<?php } */ ?>
+								<i id="icon247" class=""></i>
+								</a>
+<?php }else {
+	echo "<p style='color:red'>Out of stock </p>";
+
+}?>
+								  <div class="left-align position-relative"> <a data-toggle="collapse" href="#collapseExample"
+                                    role="button" aria-expanded="false" aria-controls="collapseExample" class="share"
+                                    title="Share"><i class="fas fa-share-alt"></i></a>
+
+                                <div class="collapse share-a" id="collapseExample">
+                                    <div class="card card-body p-0">
+                                        <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                                        <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                                        <a href="#" class="googleplus"><i class="fab fa-google-plus-g"></i></a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+
+
+                    </div>
+
+
+
+
+
+                </div><!-- /.row -->
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="det-s">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="Discription-tab" data-toggle="tab"
+                                        href="#Discription" role="tab" aria-controls="Discription"
+                                        aria-selected="true">Discription</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="Specification-tab" data-toggle="tab" href="#Specification"
+                                        role="tab" aria-controls="Specification" aria-selected="false">Specification
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="Reviews-tab" data-toggle="tab" href="#Reviews" role="tab"
+                                        aria-controls="Reviews" aria-selected="false">Reviews</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="Discription" role="tabpanel"
+                                    aria-labelledby="Discription-tab">
+                                    <p><?php echo $product[0]->overview; ?></p>
+                                
+                                </div>
+                                <div class="tab-pane fade" id="Specification" role="tabpanel"
+                                    aria-labelledby="Specification-tab">
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                           	<table>
+								<tr>
+									<td>Product code</td>
+									<td>: <?php echo $product[0]->pcode ?></td>
+								</tr>
+								<tr>
+									<td>Type</td>
+									<td>: <?php echo $product[0]->title ?></td>
+								</tr>
+								<?php /*<tr>
+									<td>Color</td>
+									<td>: <?php echo $product[0]->clname ?></td>
+								</tr>*/?>
+									<?php
+									if (is_array($product)) {
+									foreach ($product as $prod) {
+									?>
+								<tr class="prodspec" id="spec-<?php echo $prod->id ?>"
+								style="<?php if ($prod->id == $product[0]->id) { ?>display:table-row;<?php } else { ?>display:none;<?php } ?>">
+									<td>Dimensions</td>
+									<td>: <?php echo $prod->sname ?></td>
+								</tr>
+								<?php }
+								} ?>
+								<?php
+								$spec = $this->home_db->getcontent1('product_spec', 'pid', $product[0]->id, '', '', '');
+								if (is_array($spec)) {
+								foreach ($spec as $s) {
+								?>
+								<tr>
+									<td><?php echo $s->spec_name ?></td>
+									<td>: <?php echo $s->spec_val ?></td>
+								</tr>
+								<?php }
+								} ?>
+							</table>
+                                        </div><!-- /.col-md-6 -->
+                                    </div><!-- /.row -->
+                                </div>
+                                <div class="tab-pane fade" id="Reviews" role="tabpanel" aria-labelledby="Reviews-tab">
+                                    	<div class="row customer_review">
+								<?php
+								$reviews = $this->home_db->getcontent1('reviews', 'psid', $product[0]->id, '0', 'created_date', 'asc');
+								if (is_array($reviews)) { ?>
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<?php
+									foreach ($reviews as $r) {
+									?>
+									<div class="review_box">
+										<div class="row">
+											<div class="col-lg-2 col-md-2 col-sm-3">
+												<img src="<?php echo asset_url(); ?>images/avatar1.png"	class="customer_img">
+												<p>
+													<span class="date"><?php echo date("M d Y", strtotime($r->created_date)); ?></span>
+													<br>
+												</p>
+												<p class="star_box">
+												<span
+												class="star <?php if (intval($r->rating) >= 1) { ?>star_review<?php } ?>"></span>
+												<span
+												class="star <?php if (intval($r->rating) >= 2) { ?>star_review<?php } ?>"></span>
+												<span
+												class="star <?php if (intval($r->rating) >= 3) { ?>star_review<?php } ?>"></span>
+												<span
+												class="star <?php if (intval($r->rating) >= 4) { ?>star_review<?php } ?>"></span>
+												<span
+												class="star <?php if (intval($r->rating) >= 5) { ?>star_review<?php } ?>"></span>
+												</p>
+											</div>
+											<div class="col-lg-10 col-md-10 col-sm-9">
+												<h4 class="name"><?php echo $r->name ?></h4>
+												<p>
+													<?php echo $r->review_descp; ?>
+												</p>
+											</div>
+										</div>
+									</div>
+									<?php } ?>
+								</div>
+								<?php } ?>
+								<!-- <div class="col-lg-4 col-md-4 col-sm-4">
+								</div> -->
+							</div>
+                                    <div class="comment-form">
+                                        <h2>Write your review</h2>
+                                        <?php
+										$name = '';
+										$email = '';
+										if (!empty($UserDetail)) {
+										$name = $UserDetail[0]->name;
+										$email = $UserDetail[0]->emailid;
+										}
+										?>
+										<div id="reviewmsgbox"></div>
+                                        <form class="contact-one__form contact-form-validated">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <input type="text" placeholder="Title*" name="name"	id="name" maxlength="30" value="<?php echo $name; ?>">
+                                                </div><!-- /.col-lg-6 -->
+                                                <input type="hidden" name="pid" id="pid" value=" <?php echo $product[0]->id; ?>">
+                                                <div class="col-lg-12">
+                                                    <textarea name="review_descp" placeholder="Write Comment" id="review_descp"></textarea>
+                                                </div><!-- /.col-lg-12 -->
+
+                                                <div class="col-lg-12">
+                                                    <label for="">Rate here</label> <br>
+                                                    <div class="star-wrapper">
+                                                        <a class="fa fa-star s1 " rel="1" id="rating"></a>
+                                                        <a class="fa fa-star s2" rel="2" id="rating"></a>
+                                                        <a class="fa fa-star s3" rel="3" id="rating"></a>
+                                                        <a class="fa fa-star s4" rel="4" id="rating"></a>
+                                                        <a class="fa fa-star s5" rel="5" id="rating" checked></a>
+                                                    </div>
+                                                </div>
+<div id="ratereview"></div>
+<input type="hidden" name="ratings" id="ratings" value="4">
+                                                <div class="col-lg-12 mt-4">
+                                                    <button type="submit" class="thm-btn" id="review">Submit Review</button>
+                                                    <!-- /.thm-btn -->
+                                                </div><!-- /.col-lg-12 -->
+                                            </div><!-- /.row -->
+                                        </form>
+                                    </div><!-- /.comment-form -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ <?php }else {
+        		echo "No product found";
+        }?>
+
+
+
+	<?php 			$similar = $this->home_db->productDetailsView($product[0]->cpage_url, $product[0]->id, $product[0]->mid);
+	
+ ?>
+
+
+              <div class="team-one__content">
+                    <section class="team-one">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="block-title__image"></div>
+                                <h5>Related Products</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="team-one__nav">
+                                    <div class="swiper-button-prev" id="team-one__swiper-button-next"><i
+                                            class="agrikon-icon-left-arrow"></i>
+                                    </div>
+                                    <div class="swiper-button-next" id="team-one__swiper-button-prev"><i
+                                            class="agrikon-icon-right-arrow"></i></div>
+                                </div><!-- /.team-one__nav -->
+                            </div>
+                        </div>
+                        <div class="team-one__carousel-wrap">
+                            <div class="thm-swiper__slider swiper-container" data-swiper-options='{"spaceBetween": 0, "slidesPerView": 1, "slidesPerGroup": 1, "autoplay": { "delay": 5000 }, "navigation": {
+                    "nextEl": "#team-one__swiper-button-next",
+                    "prevEl": "#team-one__swiper-button-prev"
+                },"breakpoints": {
+                    "0": {
+                        "spaceBetween": 0,
+                        "slidesPerView": 1,
+                        "slidesPerGroup": 1
+                    },
+                    "640": {
+                        "spaceBetween": 30,
+                        "slidesPerView": 2,
+                        "slidesPerGroup": 2
+                    },
+                    "992": {
+                        "spaceBetween": 30,
+                        "slidesPerView": 3,
+                        "slidesPerGroup": 3
+                    },
+                    "1200": {
+                        "spaceBetween": 30,
+                        "slidesPerView": 3,
+                        "slidesPerGroup": 3
+                    }
+                }}'>
+
+                                <div class="swiper-wrapper">
+ <?php
+                    	if (is_array($similar)) {
+                    		foreach ($similar as $p) {
+		$url = base_url() . 'product/' . $p->ppage_url;
+			$mrp = $p->mrp;
+			$sell = $p->selling_price;
+			$sel_dollar = $p->sel_dollar;
+			if($user_type == 2)
+			{
+			  $sell = $p->b2b_selling_price;
+			  $sel_dollar = $p->b2b_sel_dollar;
+			}
+			$disc = $this->home_db->discount($mrp, $sell);
+			$name = $p->title;
+			if (strlen($name) > 32) {
+			$name = substr($name, 0, 30) . '...';
+			}
+			
+			$stock = $p->stock;
+			?>
+			<?php
+			$wish = 0;
+			if (!empty($UserDetail)) {
+			$db = array(
+			'categ' => $p->cpage_url,
+			'pid' => $p->id,
+			'user_id' => $UserDetail[0]->id
+			);
+			$wish = $this->home_db->checkwishlist($db);
+			}
+			?>
+
+
+		<?php } } ?>
+
+
+
+
+                                    <div class="swiper-slide">
+
+                                         
+                        <div class="blog-card">
+                        	<div class="offer-tag"><span><?php  echo round($disc);?>%</span></div>
+                             <?php $rate = $this->products_db->getratings($p->id); ?>
+                             <?php $sql=$this->home_db->getcontent('product_images','id',$p->id,'0','');
+                                        ?>
+                        <p class="star_box">
+                                <span class="star <?php if (intval($rate) >= 1) { ?>star_review<?php } ?>"></span>
+                                <span class="star <?php if (intval($rate) >= 2) { ?>star_review<?php } ?>"></span>
+                                <span class="star <?php if (intval($rate) >= 3) { ?>star_review<?php } ?>"></span>
+                                <span class="star <?php if (intval($rate) >= 4) { ?>star_review<?php } ?>"></span>
+                                <span class="star <?php if (intval($rate) >= 5) { ?>star_review<?php } ?>"></span>
+                            </p> 
+                            <div class="blog-card__image">
+                                <img src="<?php echo cdn_url() . $p->image_path; ?>" alt="">
+                                <a href="<?php echo $url; ?>"></a>
+                            </div><!-- /.blog-card__image -->
+                            <div class="blog-card__content">
+   
+                                <h3><a href="<?php echo $url; ?>"><?php echo $name; ?></a></h3>
+                                <div class="price"><span class="new-price"><i class="fas fa-rupee-sign"></i>  <?php echo $this->home_db->getnumberformat($sell); ?></span>
+                                      <?php if (floatval($disc) > 0) {?>
+                                 <span class="old-price"><i class="fas fa-rupee-sign"></i>
+                                    <?php echo $this->home_db->getnumberformat($mrp); ?></span><?php } ?>
+                                </div>
+                                 <?php
+                            if(!empty($stock) && $stock >0) {
+                               ?>
+                                 <a href="javascript:add_cart('<?php echo $p->cpage_url; ?>','<?php echo $p->id; ?>');" class="thm-btn"><i class="fas fa-shopping-cart"></i> &nbsp; ADD TO CART</a><!-- /.thm-btn -->
+                               <?php
+                                    if(!empty($UserDetail)) {
+                                        ?>
+                                          <a class="wish-btn awishlist" href="javascript:void(0);" data-original-title="Add to Wish List"
+                                    wid="<?php echo $p->id; ?>" id="w<?php echo $p->id; ?>"
+                                    categ="<?php echo $p->cpage_url ?>" <?php if ($wish == 0) { ?>class="awishlist"
+                                    title="Add to wishlist" <?php } else { ?> class="added" title="Added to wishlist"
+                                    <?php } ?>><i class="far fa-heart"></i></a><!-- /.thm-btn -->
+                                        <?php
+                                    }else {
+                                        ?>
+                                          <a class="wish-btn awishlist" href="<?= base_url().'login';?>" data-original-title="Add to Wish List"
+                                    wid="<?php echo $p->id; ?>" id="w<?php echo $p->id; ?>"
+                                    categ="<?php echo $p->cpage_url ?>" <?php if ($wish == 0) { ?>class="awishlist"
+                                    title="Add to wishlist" <?php } else { ?> class="added" title="Added to wishlist"
+                                    <?php } ?>><i class="far fa-heart"></i></a><!-- /.thm-btn -->
+                                        <?php
+                                    }
+                                ?>
+
+                                <?php
+                            }else {
+
+                                  ?>
+<p style="color:red;float: right;margin-top:10px">Out of Stock</p>
+                                <?php
+                            }?>
+                            </div><!-- /.blog-card__content -->
+                        </div><!-- /.blog-card -->
+                   
+
+
+                                    </div><!-- /.swiper-slide -->
+
+
+ 
+
+
+
+                                </div><!-- /.swiper-wrapper -->
+
+                            </div><!-- /.thm-swiper__slider -->
+                        </div><!-- /.team-one__carousel-wrap -->
+                    </section><!-- /.team-one -->
+                </div>  
+
+
+
+            </div><!-- /.container -->
+       
+        </section><!-- /.service-details -->
+
+
+
+<?php echo $footer; ?>
+
+
+
+ <script src="<?php echo asset_url() ?>js/jquery-2.1.1.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/swiper.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/jquery.ajaxchimp.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/jquery.magnific-popup.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/jquery.validate.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/bootstrap-select.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/wow.js"></script>
+    <script src="<?php echo asset_url() ?>js/odometer.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/jquery.appear.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/jarallax.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/circle-progress.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/wNumb.min.js"></script>
+    <script src="<?php echo asset_url() ?>js/nouislider.min.js"></script>
+
+    <!-- template js -->
+    <script src="<?php echo asset_url() ?>js/theme.js"></script>
+<?php echo $jsFile; ?>
+<script type="text/javascript">
+
+
+$("#sizes").change(function() {
+$(".prodspec").hide();
+$(".prod_price").hide();
+$("#spec-" + $("#sizes").val()).css("display", "table-row");
+$("#price-" + $("#sizes").val()).show();
+});
+
+$('.star-wrapper a').on('click',function(event) {
+	
+	$('.star-wrapper a').addClass('checked');
+var rate = $(this).attr("rel");
+$('#ratings').val(rate);
+});
+
+
+$("#review").on('click',function(e) {
+
+var name = $("#name").val();
+	console.log(name);
+var review_descp = $("#review_descp").val();
+var ratings = $("#ratings").val();
+var pid = $("#pid").val();
+$("#reviewmsgbox").show();
+if ($.trim(name) == "") {
+$("#reviewmsgbox").html(
+'<div class="alert alert-danger alert-dismissable"><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>Enter Your Name.</div>'
+);
+return false;
+} else if ($.trim(review_descp) == "") {
+$("#reviewmsgbox").html(
+'<div class="alert alert-danger alert-dismissable"><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>Enter Your Review.</div>'
+);
+return false;
+} else {
+$.ajax({
+	url :"<?= base_url().'home/reviews';?>",
+	method :"post",
+	data : {
+		name: name,
+review_descp: review_descp,
+ratings: ratings,
+id: pid
+	},
+	success:function(data) {
+		if (parseInt(data) == 0) {
+$("#reviewmsgbox").html('<div class="alert alert-danger alert-dismissable"><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>Error in submitting your review. Please try after sometime !!!</div>');
+} else {
+$("#name").val("");
+$("#review_descp").val("");
+$("#ratings").val("");
+location.reload();
+$("#reviewmsgbox").html('<div class="alert alert-success alert-dismissable"><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>Submitted Successfully !!!</div>');
+$("#reviewmsgbox").fadeOut(4000);
+}
+
+	}
+});
+}
+});
+function checkpincode() {
+var pin = $("#pincode").val();
+$('.myloader').fadeIn();
+$.post("<?php echo base_url() ?>home/checkpincode", {
+pin: pin
+}, function(data) {
+$('.myloader').fadeOut();
+$("#pinchecked").show();
+//$("#checkpin").hide();
+if (data != '') {
+var del = "<span class='free_del'>Free Delivery</span>";
+if (parseFloat(data) > 0) {
+del = "with delivery charges <i class='fas fa-rupee-sign' style='color:#fff;margin-right:5px'></i>" + data;
+}
+$("#pinchecked").html("<p class='edit avil'><i class='yes icon icon-done_green'></i><b>Delivery</b> (" + pin +
+") <i class='fas fa-pencil-alt' onclick='removepincode();'></i> <span class='head'> </span><span class='text'>This item can be Delivered to your location<br>" +
+del +
+"</span></p><p class='hidden'><span class='head'><i class='yes icon icon-done_green'></i> </p>"
+);
+
+} else {
+$("#pinchecked").html("<p class='edit not-avil'><i class='no icon icon-no'></i><b>Delivery</b> (" + pin +
+") <i class='fas fa-pencil-alt' onclick='removepincode();'></i> <span class='head'> </span><span class='text'>Delivery not available to your location</span></p>"
+);
+}
+});
+return false;
+}
+
+function removepincode() {
+$('#checkpin').show();
+$('#pinchecked').hide();
+$.post("<?php echo base_url() ?>home/removepincode", function(data) {
+
+});
+}
+
+</script>
+
+
+
+</body>
+
+</html>

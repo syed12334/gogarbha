@@ -1,0 +1,111 @@
+
+
+<?php $contact = $this->home_db->getcontentstatus("social_links","id","1","","","","");?>
+<?php $contact2 = $this->home_db->getcontentstatus("contactus","id","1","","","","");?>
+<!-- <NEWS LETTER> ================================= -->
+<div class="newsletter_row">
+	<div class="container">
+    	<div class="row">
+        	<div class="col-lg-5">
+            	<div class="newsletter">
+                    <h3>News Letter</h3>
+                    <input id="newltrsemail" type="text" placeholder="Enter your email ID">
+                    <input id="newslttr" type="submit" value="Subscribe">
+                    <div id="emailmsgbox" class="col-lg-10"></div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-3">
+            	<h3>Payment Method</h3>
+                <span class="payment_method">
+                    <img src="<?php echo asset_url();?>images/visa.png">
+                    <img src="<?php echo asset_url();?>images/maestro.png">
+                    <img src="<?php echo asset_url();?>images/master.png">
+                    <img src="<?php echo asset_url();?>images/netbanking.png">
+                </span>
+            </div>
+            <div class="col-lg-3 text-right">
+            	<h3>Get Social</h3>
+                <a href="<?php echo $contact[0]->facebook;?>" target="_blank" class="social_icon facebook"> </a>
+                <a href="<?php echo $contact[0]->twitter;?>" target="_blank" class="social_icon twitter"> </a>
+                <!-- <a href="<?php echo $contact[0]->rssfeeds;?>" target="_blank" class="social_icon rss"> </a> -->
+                <a href="<?php echo $contact[0]->googleplus;?>" target="_blank" class="social_icon google"> </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END <NEWS LETTER> -->
+
+<?php if(current_url() == base_url() || current_url() == base_url().'/home'){
+	$testi = $this->home_db->getcontent('testimonials','','','0','asc');
+?>
+<!-- <TESTIMONIAL> ================================= -->
+<div class="testimonial_row">
+	<div class="container">
+    	<div class="row">
+        	<div class="col-lg-8 col-lg-offset-2">
+            	<div id="testimonial" class="owl-carousel">
+            	<?php if(is_array($testi)){
+            			foreach ($testi as $t){
+            		?>
+                    <div class="testimonial">
+                        <img src="<?php echo cdn_url().$t->image_path;?>">
+                        <p>
+                            <?php echo $t->comment?>
+                        </p>
+                        <p class="author"><?php echo $t->name?> - <?php echo $t->location?></p>
+                    </div>
+                <?php }}?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END </TESTIMONIAL> -->
+<?php }?>
+
+<?php 
+$category = $this->home_db->getcontent1('view_categ_exist','','','','corder_no','asc');
+?>
+<!-- <FOOTER> ================================= -->
+<div class="footer">
+	<div class="container">
+    	<div class="row">
+        	<div class="col-lg-4 col-md-4 col-sm-4 border">
+        	<?php if(is_array($category)){?>
+            	<div class="information">
+            		<h3>Information</h3>
+            		<?php foreach ($category as $c){?>
+                    <a href="<?php echo base_url();?>products?type=<?php echo $c->cpage_url;?>"><?php echo $c->cname;?></a>
+                    <?php }?>
+                </div>
+                <?php }?>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 border">
+            	<div class="why">
+                	<h3>Why buy from us?</h3>
+                    <a href="<?php echo base_url()?>aboutus">About us</a>
+					<a href="<?php echo base_url()?>home/delivery_information">Delivery Information</a>
+                    <a href="<?php echo base_url()?>home/privacy_policy">Privacy Policy</a>
+                    <a href="<?php echo base_url()?>home/disclaimer">Disclaimer</a>
+                    <a href="<?php echo base_url()?>home/customerservice">Customer Service</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 border">
+            	<div class="contactus">
+                    <h3>Contact Us</h3>
+                    <p class="address">
+                    	<i class="icon icon-location_yellow"></i>
+                        <?php echo strip_tags($contact2[0]->address,"<br>"); ?>
+                    </p>
+                    <p class="ph"><i class="icon icon-ph_yellow"></i><?php echo $contact2[0]->phone; ?></p>
+                    <p class="email"> <i class="icon icon-email_yellow"></i> <a style="margin-left: 0;" href="mailto:<?php echo $contact2[0]->email; ?>"><?php echo $contact2[0]->email; ?></a> </p>
+                </div>
+            </div>
+        </div>
+        
+        <p class="copyright">
+        	Copyright 2015 all rights reserved
+        </p>
+    </div>
+</div>
+<!-- END </FOOTER>  -->

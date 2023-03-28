@@ -1,0 +1,465 @@
+
+
+<span class="myloader" style="display:none;"></span>
+<!-- <CART POPUP> ================================= -->
+<div class="cart_popup_wr">
+	<div class="cart_popup">
+		<div class="items_rate">
+			<?php $charges = 0;
+			if ($this->session->userdata('pincode')){
+				if (floatval($this->session->userdata('charges')) > 0){
+				   $charges = $this->session->userdata('charges');
+				}
+			}
+			?>
+			<?php if(!is_array($UserDetail)){?>
+				<span class="count"> <span class="cartcnt"><?php echo count($this->cart->contents()); ?></span> items</span>
+				<span class="price" id="carttot"> <i class=" icon_rs_gray"></i>
+				<?php echo $this->home_db->getcarttotal($this->session->userdata('discount'), $this->cart->total(), $charges); ?></span>
+			<?php }else{
+				
+				if($UserDetail[0]->user_type == 2 || $UserDetail[0]->user_type == 1)
+				{
+				    $cart_prod = $this->home_db->getRecords("cart_products", array("user_id"=>$UserDetail[0]->id), "id,prodsize_id, qty");
+				?>
+				  <span class="count"> <span class="cartcnt"><?php echo count($cart_prod); ?></span> items</span>
+				 <span class="price" id="carttot"> <i class=" icon_rs_gray"></i>
+				 <?php echo $this->home_db->getcarttotal($this->session->userdata('discount'),count($cart_prod), $charges); ?></span>
+		  <?php }else{?>
+				
+				<span class="count"> <span class="cartcnt"><?php echo count($this->cart->contents()); ?></span> items</span>
+			    <span class="price" id="carttot"> <i class=" icon_rs_gray"></i>
+			    <?php echo $this->home_db->getcarttotal($this->session->userdata('discount'), $this->cart->total(), $charges); ?></span>
+			<?php
+			   }
+			}
+			?>
+			
+		</div>
+		<a href="javascript:void(0);" class="close">X</a>
+		<div id="cart_tabs" class="tabs_container">
+			<ul class="tabs">
+				<li data-tabs="cart_tab1" class="active" id="carttab1">Cart</li>
+				<li data-tabs="cart_tab2" id="carttab2">Wishlist</li>
+			</ul>
+			<div id="cart_tab1" class="tabcontent cart_tabcontent">
+				<div class="items_wr" id="cart_popup_wr"
+					<?php if (count($this->cart->contents()) <= 0) { ?>align="center" <?php } ?>>
+					<?php if (count($this->cart->contents()) > 0) {
+					foreach ($this->cart->contents() as $items) {
+					$options = $this->cart->product_options($items['rowid']);
+					?>
+					<div class="added_cart_item_row <?php echo $items['rowid']; ?>">
+						<div class="item">
+							<a href="<?php echo $items['plink']; ?>"><img src="<?php echo $items['image']; ?>"></a>
+						</div>
+						<div class="item_details">
+							<h4><?php echo $items['name']; ?>
+							<?php if ($items['sizeid'] != '0') {
+							echo '(' . $items['sname'] . ')';
+							} ?></h4>
+							<p>[<?php echo $items['pcode']; ?>]</p>
+						</div>
+						<span class="delete_btn" onclick="remove_row('<?php echo $items['rowid'] ?>');" title="remove"></span>
+					</div>
+					<?php } ?>
+					<div class="view_btn">
+						<a class="btn btn-primary" href="<?php echo base_url(); ?>cart/cart_summary">View Cart</a>
+					</div>
+					<?php } else {
+					?>
+						<div class="alert alert-danger alert-dismissable" style="width: 80%;">No items in your Cart!</div>
+					<?php } ?>
+				</div>
+			</div>
+			<div id="cart_tab2" class="tabcontent cart_tabcontent">
+				<div class="items_wr" id="wish_popup_wr" <?php if (!is_array($UserDetail)) { ?>align="center" <?php } else { $wishlist = $this->home_db->getcontent1('wishlist_view', 'user_id', $UserDetail[0]->id, '', 'id', 'asc'); if (!is_array($wishlist)) { ?>align="center"<?php }} ?>>
+					<?php if (!is_array($UserDetail)) { ?>
+					<div class="alert alert-danger alert-dismissable" style="width: 80%;">No Wishlist Found!</div>
+					<?php } else {
+					//$wishlist = '';
+					if (is_array($wishlist)) {
+					foreach ($wishlist as $w) {
+					$url = base_url() . 'products/product_view?page=' . $w->ppage_url;
+					?>
+					<div class="added_cart_item_row remove<?php echo $w->id; ?>">
+						<div class="item">
+							<a href="<?php echo $url ?>"><img src="<?php echo cdn_url() . $w->image_path; ?>"></a>
+						</div>
+						<div class="item_details">
+							<h4><?php echo $w->pname ?></h4>
+							<p>[<?php echo $w->pcode; ?>]</p>
+						</div>
+						<a href="javascript:add_cart('<?php echo $w->cpage_url; ?>','<?php echo $w->psid; ?>');remove_wish(<?php echo $w->pid; ?>);"class="add_cart">Add to Cart</a>
+						<span class="delete_btn" onclick="remove_wish(<?php echo $w->pid; ?>);" title="remove"></span>
+					</div>
+					<?php } ?>
+					<div class="view_btn">
+						<a class="btn btn-primary" href="<?php echo base_url(); ?>my_account/my_wishlist">View Wishlist</a>
+					</div>
+					<?php } else { ?>
+						<div class="alert alert-danger alert-dismissable" style="width: 80%;">No Wishlist Found!</div>
+					<?php }
+					} ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- </CART POPUP> ================================= -->
+<!-- <HEADER> ================================= -->
+
+<?php $brochure = $this->home_db->getcontent('brochure','','','','');?>
+<a href="#" class="scrollup">Scroll</a>
+<header>
+	<div class="topbsp  text-center">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-5 col-sm-5 col-xs-12 hidden-sm hidden-xs text-left">
+					<li class="t-left">Get 50% Off On Selected Items</li>
+				</div>
+				<div class="col-lg-6 col-md-7 col-sm-7 col-xs-12 hidden-sm text-right offtitle"><?php if($brochure[0]->brochure_pdf !=''){?><a href="<?php echo base_url().$brochure[0]->brochure_pdf;?>" type="button" class="btn btn-warning" download >Download Brochure</a><?php }?></div>
+			</div>
+		</div>
+	</div>
+	<?php 
+	$array=explode('/', $_SERVER['REQUEST_URI']);
+	end($array);
+	$mainmenu = $this->uri->segment(2);
+	$menu = $this->uri->segment(3);
+
+	$arr1 = $arr2 = array();
+	//$hcategory = $this->home_db->getcontent1('view_categ_exist','*','','','corder_no','asc');
+	
+	$catmenu = $this->uri->segment(1);
+	//echo "catmenu".$catmenu;
+	$user_type = "";
+	$cart_tot = count($this->cart->contents());
+	if($catmenu == "wholesaler" && $UserDetail== '')
+	{
+		 $hcategory = $this->home_db->runSql('select id as cid,name as cname,page_url as cpage_url,image_path as cimage_path from category where  type IN(0,2) ORDER BY order_no ASC ');
+	}
+	else if(is_array($UserDetail)){
+	  $user_type = $UserDetail[0]->user_type;
+	  
+	  $cart_prod = $this->home_db->getRecords("cart_products", array("user_id"=>$UserDetail[0]->id), "id,prodsize_id, qty");
+	  $cart_tot = count($cart_prod);
+	  $qry = " 1";
+	  if($user_type ==1)
+	  {
+		  $qry = " status=0";
+	  }
+	  $hcategory = $this->home_db->runSql("select id as cid,name as cname,page_url as cpage_url,image_path as cimage_path from category where $qry and type IN(0,$user_type) ORDER BY order_no ASC ");
+	  //echo $this->db->last_query();exit;
+	}
+	else{
+		$hcategory = $this->home_db->getRecords('category',array('status'=>0),'id as cid,name as cname,page_url as cpage_url,image_path as cimage_path','order_no ASC');
+	}
+	
+	
+	$cnt = 0;
+	
+	?>
+	<div class="homemenu">
+		<div class="container">
+			<div class="row">
+				<div id="logo" class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-left">
+					<a href="<?php echo base_url() ?>"><img src="<?php echo asset_url(); ?>images/logo.png" class="img-responsive"></a>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 header_sea">
+					<div id="search" class="desktop-search">
+						<div id="search" class="wbSearch">
+							<div id="search_block_top">
+								<div class="input-group">
+									<input type="text" value="" placeholder="Search products here..." name="searchbar" id="searchbar" onkeypress="searchproducts(event);" class="ui-autocomplete-input search_query form-control input-lg madebyhand-search" autocomplete="off">
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-primary btn-lg" onclick="checkempty();">
+										<i class="fas fa-search"></i>
+										</button>
+									</div>
+									<div class="madebyhand-search text-left">
+										<div class="madebyhand-search-loader" style="display: none;">
+											<div class="loaders"></div>
+										</div>
+										<div class="madebyhand-search-result">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="top-links" class="col-lg-7 col-md-7 col-sm-12 col-xs-12 text-right">
+					<ul class="list-inline">
+						<?php if(!is_array($UserDetail)){?>
+						<li class="dropdown inuser d-inline-block">
+							<a href="<?php echo base_url();?>register" title="My Account" class="dropdown-toggle" data-toggle="dropdown">
+								<div class="usvg d-inline-block">
+									<div class="svgbg"><i class="far fa-user ssm"></i> </div>
+									<div class="hdis text-left nav-link hidden-xs d-inline-block">
+									<span class="hidden-sm-down userdess">My Account</span><br class="hidden-md-down">
+									<span><span id="cartme">Register &amp; login</span></span>
+									</div>
+								</div>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-right user-down haccount  hlogout ">
+								<h5 class="text-left">Your Account</h5>
+								<h6 class="text-left">Access account and manage orders</h6>
+								<li class="acd"><a href="<?php echo base_url();?>register" class="link"><i
+								class="fa fa-user-plus"></i> Register</a></li>
+								<li class="acd"><a href="<?php echo base_url();?>login" class="link"><i class="fa fa-lock"></i> Sign In</a></a></li>
+							</ul>
+						</li>
+						<?php }else{
+						?>
+						<!--<div class="hdis text-left nav-link hidden-xs d-inline-block">
+							<a href="<?php echo base_url()?>home/logout">
+								<div class="usvg d-inline-block">
+									<div class="svgbg"><i class="far fa-user ssm"></i> </div>
+									<div class="hdis text-left nav-link hidden-xs d-inline-block">
+										<span class="hidden-sm-down userdess">Hi</span><br class="hidden-md-down">
+										<span><?php echo $UserDetail[0]->name;?></span>
+									</div>
+								</div>
+							</a>
+						</div>-->
+						
+						<li class="dropdown inuser d-inline-block">
+						
+							
+							<a  title="My Account" href="<?php echo base_url();?>my_account" class="dropdown-toggle" data-toggle="dropdown">
+								<div class="usvg d-inline-block">
+									<div class="svgbg"><i class="far fa-user ssm"></i> </div>
+									<div class="hdis text-left nav-link hidden-xs d-inline-block">
+									<span class="hidden-sm-down userdess">Hi</span><br class="hidden-md-down">
+									<span><span id="cartme"><?php echo $UserDetail[0]->name;?></span></span>
+									</div>
+								</div>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-right user-down haccount  hlogout ">
+								
+								<li class="acd"><a href="<?php echo base_url();?>my_account" class="link"><i
+								class="fa fa-user-plus"></i> My Profile</a></li>
+								<li class="acd"><a href="<?php echo base_url();?>my_account/my_orders" class="link"><i class="fa fa-lock"></i> My Orders</a></a></li>
+								
+								
+								<li class="acd"><a href="<?php echo base_url();?>my_account/my_wishlist" class="link"><i class="fa fa-lock"></i> Wish List</a></a></li>
+								<li class="acd"><a href="<?php echo base_url()?>home/logout" class="link"><i
+								class="fa fa-user-plus"></i> Log Out</a></li>
+							</ul>
+						</li>
+						
+						<?php }?>
+						
+						<li>
+							<div id="cart" class="btn-group btn-block">
+								<a href="<?php echo base_url()?>cart/cart_summary">
+									<div class="svgbg">
+										<i class="fas fa-shopping-basket ssm"></i>
+									</div>
+									<span id="cart-total"><span class="hidden-xs  hidden-xs  cartna"> My cart</span>
+									<br class="hidden-xs hidden-sm">
+									<span
+									class="cartt count cartcnt">(<?php echo $cart_tot;?>)</span>
+									<span class="hidden-xs hidden-sm hidden-xs "> Items </span></span>
+								</a>
+								
+								 
+							</div>
+						</li>
+						
+						
+						<?php 
+						  $currencyid = $this->session->userdata('currencyid');
+						  $priceType  = ($currencyid !='') ? $currencyid['price_type'] : '';
+						  $currency   = ($priceType =='2') ? 'USD' : 'INR';
+						?>
+						<li class="dropdown inuser d-inline-block">
+							
+							<a  title="Currency Type" href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<div class="usvg d-inline-block">
+									<div class="svgbg"><i class="fa fa-money ssm"></i> </div>
+									<div class="hdis text-left nav-link hidden-xs d-inline-block">
+									<span class="hidden-sm-down userdess currencyid">Currency Type (<?=$currency;?>) </span><br class="hidden-md-down">
+									
+									</div>
+								</div>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-right user-down haccount  hlogout ">
+								
+								<a onclick="getPrice('<?php echo $user_type;?>',1)" class="link" style="cursor:pointer;"><li class="acd"><i
+								class="fa fa-inr"></i> INR </li></a>
+								<a onclick="getPrice('<?php echo $user_type;?>',2)" class="link" style="cursor:pointer;"><li class="acd"><i class="fa fa-dollar" ></i> USD</li></a>
+							</ul>
+						</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="header">
+		<a href="#" class="scrollup">Scroll</a>
+		<!-- Logo and Loging row -->
+		<div class="container"></div>
+		<div class="stick">
+			<div class="container">
+				<div class="row">
+					<div class=" menu_hed">
+						<div class="container_wb_megamenu">
+							<nav id="menu" class="navbar">
+								<div class="navbar-header">
+									<button type="button" class="btn-navbar navbar-toggle" onclick="openNav()" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fa fa-bars"></i></button>
+								</div>
+								<div id="mySidenav" class="sidenav">
+									<div class="close-nav  hidden-md hidden-lg hidden-xl">
+										<span class="categories">all Categories</span>
+										<a href="javascript:void(0)" class="closebtn pull-right" onclick="closeNav()"><i class="fa fa-close"></i></a>
+									</div>
+									<div class="collapse navbar-collapse navbar-ex1-collapse">
+										<ul class="nav navbar-nav">
+										<?php 
+										if(count($hcategory) > 0)
+										{  
+										   foreach ($hcategory as $c)
+										   { 
+											//$subcateg = $this->home_db->getRecords('subcategory', array("category_id" => $c->cid, "status" => 0), 'id,name,order_no,page_url,category_id', 'order_no asc');
+											$qry = "";
+											if($user_type !='')
+											{
+											  $qry =" and type IN(0,$user_type)";
+											}
+											$subcateg = $this->home_db->runSql("select id,name,order_no,page_url,category_id,type from subcategory where status=0 and category_id='".$c->cid."' $qry ORDER BY order_no ASC ");
+											
+											
+											?>
+											<?php if($c->cid==14 || $c->cid==15 || $c->cid==2 || $c->cid==6){?>
+												
+											
+											<li class="dropdown m-menu"><a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown" ><?php echo $c->cname?><i class="fa fa-angle-down enangle"></i></a>
+                                            
+											  <div class="dropdown-menu">
+												<div class="dropdown-inner">
+													<ul class="list-unstyled">
+														<li class="dropdown-submenu">
+															<ul class="list-unstyled grand-child">
+															<?php	
+														if(count($subcateg) > 0)
+														   foreach ($subcateg as $s)
+														{  
+														   { 
+														       $subsubcateg = $this->home_db->runSql("select id,name,order_no,page_url from sub_subcategory where status=0 and subcategory_id='".$s->id."' $qry ORDER BY order_no ASC ");
+																//if($user_type == 1){
+																	
+																/*}
+																else{
+																	$url = base_url()."b2bproducts?type=".$c->page_url;
+																}*/
+																										   
+															    if($s->type == 2  && !is_array($UserDetail))
+																{ 
+															?>
+															<li> <a href="<?php echo base_url();?>wholesaler"> <?php echo $s->name?></a> </li>
+															<?php 
+																}
+																else
+																{
+																?>
+															
+															   <li class="dropdown m-menu">
+																  <a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown" ><?php echo $s->name?> </a>                  
+																	<ul class="dropdown-submenu">
+																	 <?php 
+																	 if(count($subsubcateg))
+																	 {
+																		 foreach($subsubcateg as $sub)
+																		 {
+																			 $url = base_url()."products?type=".$c->cpage_url."&stype=".$s->page_url."&subtype=".$sub->page_url;
+																	 ?>
+																		<li> <a href="<?=$url;?>"><?php echo $sub->name?></a> </li>
+																	<?php 
+																		 }
+																	 }
+																	 ?>
+																	 </ul>                      
+															    </li>	
+                                                            <?php 
+																   }
+											                     }
+										                       }
+															 ?>
+															  
+														    </ul>
+														</li>
+													</div>
+
+												</div>
+											</li>
+																	
+											<?php 
+										      }
+										   else{
+										?>
+											
+											
+                                            <li class="dropdown m-menu"><a href="#" class="dropdown-toggle header-menu" data-toggle="dropdown" <?php if($mainmenu == "products"){?> class="active" <?php }?>><?php echo $c->cname?><i class="fa fa-angle-down enangle"></i></a>
+											
+                                                <div class="dropdown-menu">
+                                                    <div class="dropdown-inner">
+														<ul class="list-unstyled">
+															<li class="dropdown-submenu"> 
+																<ul class="list-unstyled grand-child">
+														<?php	
+														if(count($subcateg) > 0)
+														{  
+														   foreach ($subcateg as $s)
+														   { 
+																//if($user_type == 1){
+																	$url = base_url()."products?type=".$c->cpage_url."&stype=".$s->page_url;
+																/*}
+																else{
+																	$url = base_url()."b2bproducts?type=".$c->page_url;
+																}*/
+																										   
+															    if($s->type == 2  && !is_array($UserDetail))
+																{ 
+															?>
+																<li> <a href="<?php echo base_url();?>wholesaler"> <?php echo $s->name?></a> </li>
+																<?php 
+																}
+																else
+																{
+																?>
+																   <li> <a href="<?=$url;?>"> <?php echo $s->name?></a> </li>
+														       <?php 
+														         }
+															   }
+															}
+															?>
+																</ul>
+															</li>
+														</ul>
+                                                    </div>
+
+                                                </div>
+                                            </li>
+										   <?php }}}?>
+										   
+										   
+										   
+											
+										</ul>
+										
+                                    </div>
+								</div>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+</header>
+
+
